@@ -28,7 +28,7 @@ class Checker:
     def choose_y(self, board):
         # Get the y_position (row) sub-array of specific x_position (column) for the board_array
         column = board.board_array[self.x_pos]
-        # Iterate from index 1 (avoid the header) of row sub-array
+        # Iterate through column's rows from index 1 (avoid the header) of row sub-array
         for index in range(1,len(column)):
             row = column[index]
             print(row)
