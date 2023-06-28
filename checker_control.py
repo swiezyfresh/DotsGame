@@ -3,11 +3,11 @@ from string import ascii_uppercase as auc
 class Checker:
     checker_count = 0
 
-    def __init__(self, player, sign):
+    def __init__(self, player):
         self.x_pos = None
         self.y_pos = None
         self.owner = player
-        self.sign = sign
+        self.sign = player.checker_sign
 
     def __repr__(self):
         return self.sign
@@ -31,7 +31,6 @@ class Checker:
         # Iterate through column's rows from index 1 (avoid the header) of row sub-array
         for index in range(1,len(column)):
             row = column[index]
-            print(row)
             # If a earlier-placed checker is found in the sub-array, we place the new checker aboce it (index-1)
             if row != board.empty_field_sign:
                 self.y_pos = index-1
@@ -42,7 +41,7 @@ class Checker:
 new_board = board_c.Board()
 new_board.generate_board()
 
-new_checker = Checker(player="Ja",sign="X")
-new_checker.choose_x(new_board)
-new_checker.choose_y(new_board)
-print(new_checker.y_pos)
+#new_checker = Checker(player="Ja")
+#new_checker.choose_x(new_board)
+#new_checker.choose_y(new_board)
+#print(new_checker.y_pos)

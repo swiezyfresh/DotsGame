@@ -13,8 +13,9 @@ class Board:
         self.setup_board_fields()
     
     def __repr__(self):
+        self.refresh_board()
         return self.board_display
-
+    
     # Define initial empty board by placing empty field signs
     def setup_board_fields(self):
         # Iterate through each column of the board
@@ -40,8 +41,9 @@ class Board:
         
         # The first upper-left element of the board has to be an empty diagonal division \ between columns and rows headers
         row_headers.insert(0, '\\')
-        # Increment the columns parameter (so length for the 1-dimension of the 2d board array ->[][])
+        # Increment the columns and raws parameter (so length for 2d board array ->[+1]->[+1])
         self.columns += 1
+        self.rows += 1
         return column_headers, row_headers
 
     # Place headers for rows and columns into the board array
@@ -73,6 +75,10 @@ class Board:
         self.setup_board_connect(column_headers, row_headers)
         self.board_display = self.setup_board_display()
     
+    # Add a new checker to the board
+    def add_checker(self, x_pos, y_pos, sign):
+        self.board_array[x_pos][y_pos] = sign
+
     # Refresh the board after a checker was placed
     def refresh_board(self):
         self.board_display = self.setup_board_display()

@@ -8,6 +8,9 @@ class Player:
     def randomize_order(self):
         self.order = random.random()
 
+    def __repr__(self):
+        return self.name
+
 new_player = Player("KSK", "X")
 new_player.randomize_order()
 print(new_player.order)
