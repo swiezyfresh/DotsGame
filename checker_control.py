@@ -32,7 +32,7 @@ class Checker:
         for index in range(1,len(column)):
             row = column[index]
             # If a earlier-placed checker is found in the sub-array, we place the new checker aboce it (index-1)
-            if row != board.empty_field_sign:
+            if row != board.empty_sign:
                 self.y_pos = index-1
                 return
         #If no earlier-placed checker was found in the sub-array, we place the new_checker at last possible y_pos

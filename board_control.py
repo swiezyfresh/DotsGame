@@ -2,12 +2,12 @@ from string import ascii_uppercase as auc
 class Board:
     board_counter = 0
     
-    def __init__(self, columns=7, rows=6, empty_field_sign="O"):
+    def __init__(self, columns=7, rows=6, empty_sign="O"):
         self.board_id = Board.board_counter
         Board.board_counter += 1
         self.columns = columns
         self.rows = rows
-        self.empty_field_sign = empty_field_sign
+        self.empty_sign = empty_sign
         self.board_array = []
         self.board_display = ""
         self.setup_board_fields()
@@ -21,7 +21,7 @@ class Board:
         # Iterate through each column of the board
         for column in range(self.columns):
             # Place empty field signs in a row sub-array of iterated column  
-            column = [self.empty_field_sign for row in range(self.rows)]
+            column = [self.empty_sign for row in range(self.rows)]
             # Append this column to the board array
             self.board_array.append(column)
 
@@ -83,7 +83,3 @@ class Board:
     def refresh_board(self):
         self.board_display = self.setup_board_display()
         print(self.board_display)
-
-new_board = Board()
-new_board.generate_board()
-new_board.refresh_board()
