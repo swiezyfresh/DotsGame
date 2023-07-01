@@ -82,4 +82,6 @@ class Board:
     # Refresh the board after a checker was placed
     def refresh_board(self):
         self.board_display = self.setup_board_display()
+        print("===============")
         print(self.board_display)
+        print("===============")

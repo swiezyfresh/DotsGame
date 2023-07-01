@@ -6,52 +6,65 @@ import datetime
 class Game:
     game_counter = 0
     def __init__(self):
+        # Unique identification and information about the game
         Game.game_counter += 1
         self.id = Game.game_counter
-        self.players_amount = 2
-        self.board = board_c.Board()
         self.date = datetime.date.today().strftime('%d-%m-%Y')
         self.turn_count = 0
+        self.winner = "Tie"
+        # Assign a new board for the game and save final board status
+        self.board = board_c.Board()
         self.board_final = None
-        print(self.date)
+        # Assign players for the game
+        self.players_amount = 2
+        self.players = [None for i in range(self.players_amount)]
     
+    # Define players and create Player instances
     def add_players(self):
-        players_count = 0
-        players = []
-        while(players_count < self.players_amount):
+        for index in range(len(self.players)):
             new_player = player_c.Player()
             new_player.set_name()
             new_player.set_checker_sign(self.board)
-            players.append(new_player)
-            players_count += 1
-        return players
+            # Add new Player instance to the list of players assigned to this game
+            self.players[index] = new_player
     
-
-    def set_player_order(self, players):
-        player1 = players[0]
-        player2 = players[1]
+    # Choose starting player by comparing random order attributes of each player
+    def set_player_order(self):
+        player1 = self.players[0]
+        player2 = self.players[1]
         if player1.order < player2.order:
             temp_player = player1
-            player1 = player2
-            player2 = temp_player
-        return player1, player2
+            self.players[0] = player2
+            self.players[1] = temp_player
 
+# Start a new game
+game = Game()
+# Set up players and order
+game.add_players()
+game.set_player_order()
+print(game.players)
 
+# Set up board and display it
+game.board.generate_board()
+game.board.refresh_board()
 
-new_game = Game()
-players = new_game.add_players()
-player1, player2 = new_game.set_player_order(players)
-print(player1.name, player2.name)
-
-
-
-board1 = board_c.Board()
-board1.generate_board()
-
-turn1 = turn_c.Turn(player1, board1)
-turn1.start_turn()
-
-checker = turn1.place_checker()
-board1.add_checker(checker.x_pos, checker.y_pos, player1.checker_sign)
-print(board1.board_array)
-board1.refresh_board()
+# Loop untill the win conditions are met
+win_conditions = False
+while(win_conditions == False):
+    # Choose and save current player
+    # Choice is determined by the remainder of dividing the current turn by total amount of players
+    # EXAMPLE: Current turn = 5, Players amount = 2, 5 / 2 = 2*2 + 1 <--
+    # EXAMPLE: Remainder from this operation is 1, so the player under index 1 (so Player 2) is the turn owner
+    current_player = game.players[game.turn_count % game.players_amount]
+    # Prepare new turn and start it
+    current_turn = turn_c.Turn(current_player, game.turn_count)
+    current_turn.start_turn()
+    # Prepare new checker and place it
+    current_checker = current_turn.place_checker(game.board)
+    # Add the checker to the board and refresh it so it displays new board status
+    game.board.add_checker(current_checker.x_pos, current_checker.y_pos, current_player.checker_sign)
+    game.board.refresh_board()
+    # Increment total turn counter by 1
+    game.turn_count += 1
+    # Check if winning conditions were met, if yes then end the game
+    win_conditions = current_turn.check_vertical_status(game.board)
