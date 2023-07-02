@@ -1,5 +1,6 @@
 import random
-import board_control as board_c
+import board_control as board_ctrl
+import board_colors as board_colors
 class Player:
     player_counter = 0
     def __init__(self):
@@ -7,6 +8,10 @@ class Player:
         self.id = Player.player_counter
         self.name = "Player " + str(self.id)
         self.checker_sign = str(self.id)
+        if self.id % 2 == 0:
+            self.checker_color = board_colors.colors.fg.blue
+        else:
+            self.checker_color = board_colors.colors.fg.red
         self.order = random.random()
 
     def set_name(self):
@@ -15,9 +20,23 @@ class Player:
             print("NICKNAME MUST HAVE MAXIMUM 30 CHARACTERS!")
             self.set_name()
         self.name = name
+    
+    def set_checker_color(self):
+        fg_colors = board_colors.colors.fg()
+        print("AVAILABLE COLORS: ")        
+        print(fg_colors.display_colors())
+        color_choice = input("PLEASE ENTER YOUR CHECKER COLOR: ")
+        #color_choice = color_choice.lower
+        if hasattr(fg_colors, str(color_choice)):
+            self.checker_color = getattr(fg_colors, color_choice)
+            self.checker_color = fg_colors.bold +self.checker_color
+        else:
+            print("TYPE IN EXACT COLOR NAME FROM THE LIST!")
+            self.set_checker_color()
+            return
 
     def set_checker_sign(self, board):
-        sign = input("PLEASE ENTER YOUR CHECKER SIGN: ")
+        sign = input("PLEASE ENTER YOUR CHECKER SIGN: " + self.checker_color)
         if len(sign) > 1:
             print("CHECKER SIGN MUST BE A SINGLE CHARACTER!")
             self.set_checker_sign(board)
@@ -29,3 +48,8 @@ class Player:
 
     def __repr__(self):
         return self.name
+    
+player = Player()
+board = board_ctrl.Board()
+player.set_checker_color()
+player.set_checker_sign(board)
