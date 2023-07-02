@@ -1,6 +1,10 @@
 import random
 import board_control as board_ctrl
 import board_colors as board_colors
+
+fg_colors = board_colors.colors.fg()
+format_colors = board_colors.colors()
+
 class Player:
     player_counter = 0
     def __init__(self):
@@ -25,18 +29,17 @@ class Player:
         fg_colors = board_colors.colors.fg()
         print("AVAILABLE COLORS: ")        
         print(fg_colors.display_colors())
-        color_choice = input("PLEASE ENTER YOUR CHECKER COLOR: ")
-        #color_choice = color_choice.lower
+        color_choice = input("PLEASE ENTER YOUR CHECKER COLOR: ").lower()
         if hasattr(fg_colors, str(color_choice)):
             self.checker_color = getattr(fg_colors, color_choice)
-            self.checker_color = fg_colors.bold +self.checker_color
+            self.checker_color = self.checker_color
         else:
             print("TYPE IN EXACT COLOR NAME FROM THE LIST!")
             self.set_checker_color()
             return
 
     def set_checker_sign(self, board):
-        sign = input("PLEASE ENTER YOUR CHECKER SIGN: " + self.checker_color)
+        sign = input("PLEASE ENTER YOUR CHECKER SIGN: " + self.checker_color + format_colors.reset)
         if len(sign) > 1:
             print("CHECKER SIGN MUST BE A SINGLE CHARACTER!")
             self.set_checker_sign(board)
@@ -44,12 +47,7 @@ class Player:
             print("CHECKER SIGN MUST BE DIFFERENT FROM EMPTY SIGN!")
             self.set_checker_sign(board)
         else:
-            self.checker_sign = sign
+            self.checker_sign = format_colors.bold + self.checker_color + sign + format_colors.reset
 
     def __repr__(self):
         return self.name
-    
-player = Player()
-board = board_ctrl.Board()
-player.set_checker_color()
-player.set_checker_sign(board)

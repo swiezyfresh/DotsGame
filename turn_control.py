@@ -51,3 +51,10 @@ class Turn:
                 row_index += 1
             column_index += 1
         return False
+
+    def check_win_status(self, board):
+        horizontal = self.check_horizontal_status(board)
+        vertical = self.check_vertical_status(board)
+        all = horizontal or vertical
+        print(horizontal, vertical, all)
+        return all

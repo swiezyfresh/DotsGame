@@ -11,10 +11,10 @@ class colors:
     reverse = '\033[07m'
     strikethrough = '\033[09m'
     invisible = '\033[08m'
-    
+    reset = '\033[0m'
+    bold = '\033[01m'
+
     class fg:
-        reset = '\033[0m'
-        bold = '\033[01m'
         purple = '\033[35m'
         red = '\033[91m'
         green = '\033[92m'
@@ -27,7 +27,7 @@ class colors:
             available_colors = ""
             for (attr, value) in inspect.getmembers(self):
                 if not attr.startswith("_") and not inspect.ismethod(value):
-                    available_colors += "| "+ self.bold + value + attr + " " + self.reset
+                    available_colors += "| "+ colors.bold + value + attr + " " + colors.reset
             return available_colors
 
     

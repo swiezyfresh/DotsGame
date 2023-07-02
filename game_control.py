@@ -24,6 +24,7 @@ class Game:
         for index in range(len(self.players)):
             new_player = player_c.Player()
             new_player.set_name()
+            new_player.set_checker_color()
             new_player.set_checker_sign(self.board)
             # Add new Player instance to the list of players assigned to this game
             self.players[index] = new_player
@@ -67,4 +68,4 @@ while(win_conditions == False):
     # Increment total turn counter by 1
     game.turn_count += 1
     # Check if winning conditions were met, if yes then end the game
-    win_conditions = current_turn.check_vertical_status(game.board)
+    win_conditions = current_turn.check_win_status(game.board)
