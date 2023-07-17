@@ -20,15 +20,17 @@ class Turn:
     
     def check_horizontal_status(self, board):
         for row_index in range(1, board.rows):
-            #print("CHECKED ROW:", str(row_index))
-            for column_index in range(1, 5):
+            print("CHECKED ROW:", str(row_index))
+            column_index = 1
+            #for column_index in range(1, 5):
+            while column_index + 3 < board.columns:
                 if board.board_array[column_index][row_index] == self.turn_checker_sign:
                     checked_fields = 0
-                    #print("CHECKED FIELD NOTICED checking from COLUMNS:", str(column_index), "to:",str(column_index+3))
+                    print("CHECKED FIELD NOTICED checking from COLUMNS:", str(column_index), "to:",str(column_index+3))
                     for checked_column_index in range(column_index, column_index+4):
                         if board.board_array[checked_column_index][row_index] == self.turn_checker_sign:
                             checked_fields += 1
-                    #print("CHECKED FIELDS COUNTER in this range:", str(checked_fields))
+                    print("CHECKED FIELDS COUNTER in this range:", str(checked_fields))
                     if checked_fields == 4:
                         return True
                 column_index += 1
@@ -37,8 +39,9 @@ class Turn:
     
     def check_vertical_status(self, board):
         for column_index in range(1, board.columns):
-            #print("CHECKED COLUMN:", str(column_index))
-            for row_index in range(1, 4):
+            #print("CHECKED COLUMN:", str(column_index))'
+            #for row_index in range(1, 4):
+            while row_index + 3 < board.rows:
                 if board.board_array[column_index][row_index] == self.turn_checker_sign:
                     checked_fields = 0
                     #print("CHECKED FIELD NOTICED checking from ROWS:", str(row_index), "to:",str(row_index+3))
@@ -51,10 +54,49 @@ class Turn:
                 row_index += 1
             column_index += 1
         return False
+    
+    def check_diagonally_down_status(self, board):
+        start_row_index = 1
+        board_array = board.board_array
+        while start_row_index + 3 < board.rows:
+            start_col_index = 1
+            while start_col_index + 3 < board.columns:
+                if board_array[start_col_index][start_row_index] == self.turn_checker_sign:
+                    print("I SEE A CHECKER, I WILL CHECK THIS DIAGONAL")
+                    checked_fields = 0
+                    for checked_col_index, checked_row_index in zip(range(start_col_index, start_col_index + 4), range(start_row_index, start_row_index + 4)):
+                        print("CHECKING " + str(checked_col_index) +":"+ str(checked_row_index))
+                        if board_array[checked_col_index][checked_row_index] == self.turn_checker_sign:
+                            checked_fields += 1
+                    if checked_fields == 4:
+                        return True
+                start_col_index += 1
+            start_row_index += 1
+        return False
+
+    def check_diagonally_up_status(self, board):
+        start_row_index = 1
+        board_array = board.board_array
+        while start_row_index + 3 < board.rows:
+            start_col_index = 7
+            while start_col_index - 3 > 0:
+                if board_array[start_col_index][start_row_index] == self.turn_checker_sign:
+                    print("I SEE A CHECKER, I WILL CHECK THIS DIAGONAL")
+                    checked_fields = 0
+                    for checked_col_index, checked_row_index in zip(range(start_col_index, start_col_index - 4, -1), range(start_row_index, start_row_index + 4)):
+                        print("CHECKING " + str(checked_col_index) +":"+ str(checked_row_index))
+                        if board_array[checked_col_index][checked_row_index] == self.turn_checker_sign:
+                            checked_fields += 1
+                    if checked_fields == 4:
+                        return True
+                start_col_index -= 1
+            start_row_index += 1
+        return False
 
     def check_win_status(self, board):
         horizontal = self.check_horizontal_status(board)
         vertical = self.check_vertical_status(board)
-        all = horizontal or vertical
-        print(horizontal, vertical, all)
+        diagonally_down = self.check_diagonally_down_status(board)
+        diagonally_up = self.check_diagonally_up_status(board)
+        all = horizontal or vertical or diagonally_down or diagonally_up
         return all
