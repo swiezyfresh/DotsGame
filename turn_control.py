@@ -4,10 +4,11 @@ import board_control as board_c
 
 class Turn:
 
-    def __init__(self, turn_owner, turn_count):
+    def __init__(self, turn_owner, turn_count, win_line):
         self.turn_count = turn_count
         self.turn_owner = turn_owner
         self.turn_checker_sign = self.turn_owner.checker_sign
+        self.win_line = win_line 
     
     def start_turn(self):
         print("TURN {} | PLAYER {} | CHECKER SIGN {}".format(self.turn_count, self.turn_owner, self.turn_checker_sign))
@@ -23,15 +24,15 @@ class Turn:
             print("CHECKED ROW:", str(row_index))
             column_index = 1
             #for column_index in range(1, 5):
-            while column_index + 3 < board.columns:
+            while column_index + self.win_line - 1 < board.columns:
                 if board.board_array[column_index][row_index] == self.turn_checker_sign:
                     checked_fields = 0
                     print("CHECKED FIELD NOTICED checking from COLUMNS:", str(column_index), "to:",str(column_index+3))
-                    for checked_column_index in range(column_index, column_index+4):
+                    for checked_column_index in range(column_index, column_index+self.win_line):
                         if board.board_array[checked_column_index][row_index] == self.turn_checker_sign:
                             checked_fields += 1
                     print("CHECKED FIELDS COUNTER in this range:", str(checked_fields))
-                    if checked_fields == 4:
+                    if checked_fields == self.win_line:
                         return True
                 column_index += 1
             row_index += 1
@@ -41,15 +42,16 @@ class Turn:
         for column_index in range(1, board.columns):
             #print("CHECKED COLUMN:", str(column_index))'
             #for row_index in range(1, 4):
-            while row_index + 3 < board.rows:
+            row_index = 1
+            while row_index + self.win_line - 1 < board.rows:
                 if board.board_array[column_index][row_index] == self.turn_checker_sign:
                     checked_fields = 0
                     #print("CHECKED FIELD NOTICED checking from ROWS:", str(row_index), "to:",str(row_index+3))
-                    for checked_row_index in range(row_index, row_index+4):
+                    for checked_row_index in range(row_index, row_index+self.win_line):
                         if board.board_array[column_index][checked_row_index] == self.turn_checker_sign:
                             checked_fields += 1
                     #print("CHECKED FIELDS COUNTER in this range:", str(checked_fields))
-                    if checked_fields == 4:
+                    if checked_fields == self.win_line:
                         return True
                 row_index += 1
             column_index += 1
@@ -58,17 +60,17 @@ class Turn:
     def check_diagonally_down_status(self, board):
         start_row_index = 1
         board_array = board.board_array
-        while start_row_index + 3 < board.rows:
+        while start_row_index + self.win_line - 1 < board.rows:
             start_col_index = 1
-            while start_col_index + 3 < board.columns:
+            while start_col_index + self.win_line - 1 < board.columns:
                 if board_array[start_col_index][start_row_index] == self.turn_checker_sign:
                     print("I SEE A CHECKER, I WILL CHECK THIS DIAGONAL")
                     checked_fields = 0
-                    for checked_col_index, checked_row_index in zip(range(start_col_index, start_col_index + 4), range(start_row_index, start_row_index + 4)):
+                    for checked_col_index, checked_row_index in zip(range(start_col_index, start_col_index + self.win_line), range(start_row_index, start_row_index + 4)):
                         print("CHECKING " + str(checked_col_index) +":"+ str(checked_row_index))
                         if board_array[checked_col_index][checked_row_index] == self.turn_checker_sign:
                             checked_fields += 1
-                    if checked_fields == 4:
+                    if checked_fields == self.win_line:
                         return True
                 start_col_index += 1
             start_row_index += 1
@@ -78,16 +80,16 @@ class Turn:
         start_row_index = 1
         board_array = board.board_array
         while start_row_index + 3 < board.rows:
-            start_col_index = 7
-            while start_col_index - 3 > 0:
+            start_col_index = board.columns - 1
+            while start_col_index - self.win_line - 1 > 0:
                 if board_array[start_col_index][start_row_index] == self.turn_checker_sign:
                     print("I SEE A CHECKER, I WILL CHECK THIS DIAGONAL")
                     checked_fields = 0
-                    for checked_col_index, checked_row_index in zip(range(start_col_index, start_col_index - 4, -1), range(start_row_index, start_row_index + 4)):
+                    for checked_col_index, checked_row_index in zip(range(start_col_index, start_col_index - self.win_line, -1), range(start_row_index, start_row_index + 4)):
                         print("CHECKING " + str(checked_col_index) +":"+ str(checked_row_index))
                         if board_array[checked_col_index][checked_row_index] == self.turn_checker_sign:
                             checked_fields += 1
-                    if checked_fields == 4:
+                    if checked_fields == self.win_line:
                         return True
                 start_col_index -= 1
             start_row_index += 1

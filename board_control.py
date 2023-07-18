@@ -10,11 +10,24 @@ class Board:
         self.empty_sign = empty_sign
         self.board_array = []
         self.board_display = ""
-        self.setup_board_fields()
     
     def __repr__(self):
         self.refresh_board()
         return self.board_display
+    
+    def choose_board_parameters(self):
+        cols_amount = input("ENTER PREFERRED BOARD LENGTH (COLUMNS): ")
+        rows_amount = input("ENTER PREFERRED BOARD LENGTH (ROWS): ")
+        self.columns = int(cols_amount)
+        self.rows = int(rows_amount)
+        # try:
+        #     self.columns = int(cols_amount)
+        #     self.rows = int(rows_amount)
+        #     return
+        # except ValueError:
+        #     print("PREFERRED WIDTH AND LENGTH MUST BE INTEGERS (0-99)!")
+        #     self.choose_board_parameters()
+
     
     # Define initial empty board by placing empty field signs
     def setup_board_fields(self):
@@ -42,19 +55,18 @@ class Board:
         # The first upper-left element of the board has to be an empty diagonal division \ between columns and rows headers
         row_headers.insert(0, '\\')
         # Increment the columns and raws parameter (so length for 2d board array ->[+1]->[+1])
-        self.columns += 1
+        # self.columns += 1
         self.rows += 1
         return column_headers, row_headers
 
     # Place headers for rows and columns into the board array
     def setup_board_connect(self, column_headers, row_headers):
-        column_index = 0
         # Iterate through each column and add the corresponding column header at the first row of column (index 0)
-        for column in self.board_array:
-            column.insert(0, column_headers[column_index])
-            column_index += 1
+        for column_index in range(self.columns):
+            self.board_array[column_index].insert(0, column_headers[column_index])
         # Add a seperate column containing corresponding row headers as a first column (index 0)
         self.board_array.insert(0,row_headers)
+        self.columns += 1
 
     # Prepare a string representation of the board array to be displayed as a board for the user
     def setup_board_display(self):
@@ -71,9 +83,11 @@ class Board:
     
     # Initialize the board by generating empty fields, adding rows and connecting them
     def generate_board(self):
+        print("GENERATING {cols}x{rows} BOARD...".format(cols=self.columns, rows=self.rows))
         column_headers, row_headers = self.setup_board_headers()
         self.setup_board_connect(column_headers, row_headers)
         self.board_display = self.setup_board_display()
+        print(self.board_display)
     
     # Add a new checker to the board
     def add_checker(self, x_pos, y_pos, sign):

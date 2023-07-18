@@ -18,6 +18,8 @@ class Game:
         # Assign players for the game
         self.players_amount = 2
         self.players = [None for i in range(self.players_amount)]
+        # Declare winning line length for the game
+        self.win_line = 4
     
     # Define players and create Player instances
     def add_players(self):
@@ -37,17 +39,39 @@ class Game:
             temp_player = player1
             self.players[0] = player2
             self.players[1] = temp_player
+    
+    def set_win_line(self):
+        win_line = input("ENTER WINNING LINE LENGTH (DEFAULT = 4): ")
+        try:
+            if int(win_line) > self.board.rows-1 or int(win_line) > self.board.columns-1:
+                print("PREFERRED LINE LENGTH MUST BE SHORTER OR EQUAL TO BOARD LENGTH AND WIDTH!")
+                self.set_win_line()
+            self.win_line = int(win_line)
+            print("PLAYER HAVE TO PLACE A CONTINOUS LINE OF " + str(self.win_line) + " CHECKERS TO WIN!")
+            return
+        except ValueError:
+            if win_line == "":
+                print("PLAYER HAVE TO PLACE A CONTINOUS LINE OF " + str(self.win_line) + " CHECKERS TO WIN!")
+                return
+            print("PREFERRED LINE LENGTH MUST BE AN INTEGER!")
+            self.set_win_line()
 
 # Start a new game
 game = Game()
 # Set up players and order
 game.add_players()
 game.set_player_order()
-print(game.players)
+game.board.choose_board_parameters()
+game.board.setup_board_fields()
+
+#print(game.players)
 
 # Set up board and display it
 game.board.generate_board()
-game.board.refresh_board()
+#game.board.refresh_board()
+
+# Set up winning line conditions
+game.set_win_line()
 
 # Loop untill the win conditions are met
 win_conditions = False
@@ -58,7 +82,7 @@ while(win_conditions == False):
     # EXAMPLE: Remainder from this operation is 1, so the player under index 1 (so Player 2) is the turn owner
     current_player = game.players[game.turn_count % game.players_amount]
     # Prepare new turn and start it
-    current_turn = turn_c.Turn(current_player, game.turn_count)
+    current_turn = turn_c.Turn(current_player, game.turn_count, game.win_line)
     current_turn.start_turn()
     # Prepare new checker and place it
     current_checker = current_turn.place_checker(game.board)

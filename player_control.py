@@ -19,7 +19,7 @@ class Player:
         self.order = random.random()
 
     def set_name(self):
-        name = input("PLEASE ENTER YOUR NICKNAME: ")
+        name = input("ENTER YOUR NICKNAME: ")
         if len(name) > 30:
             print("NICKNAME MUST HAVE MAXIMUM 30 CHARACTERS!")
             self.set_name()
