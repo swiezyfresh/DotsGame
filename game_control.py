@@ -19,7 +19,7 @@ class Game:
         self.players_amount = 2
         self.players = [None for i in range(self.players_amount)]
         # Declare winning line length for the game
-        self.win_line = 4
+        self.win_line = 2
     
     # Define players and create Player instances
     def add_players(self):
@@ -41,7 +41,7 @@ class Game:
             self.players[1] = temp_player
     
     def set_win_line(self):
-        win_line = input("ENTER WINNING LINE LENGTH (DEFAULT = 4): ")
+        win_line = input("ENTER WINNING LINE LENGTH (DEFAULT = 2): ")
         try:
             if int(win_line) > self.board.rows-1 or int(win_line) > self.board.columns-1:
                 print("PREFERRED LINE LENGTH MUST BE SHORTER OR EQUAL TO BOARD LENGTH AND WIDTH!")

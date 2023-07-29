@@ -18,15 +18,13 @@ class Board:
     def choose_board_parameters(self):
         cols_amount = input("ENTER PREFERRED BOARD LENGTH (COLUMNS): ")
         rows_amount = input("ENTER PREFERRED BOARD LENGTH (ROWS): ")
-        self.columns = int(cols_amount)
-        self.rows = int(rows_amount)
-        # try:
-        #     self.columns = int(cols_amount)
-        #     self.rows = int(rows_amount)
-        #     return
-        # except ValueError:
-        #     print("PREFERRED WIDTH AND LENGTH MUST BE INTEGERS (0-99)!")
-        #     self.choose_board_parameters()
+        try:
+            self.columns = int(cols_amount)
+            self.rows = int(rows_amount)
+            return
+        except ValueError:
+            print("PREFERRED WIDTH AND LENGTH MUST BE INTEGERS (0-99)!")
+            self.choose_board_parameters()
 
     
     # Define initial empty board by placing empty field signs
