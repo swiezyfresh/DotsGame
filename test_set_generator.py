@@ -1,13 +1,10 @@
 import board_control as board_c
 import random
 
-test_board = board_c.Board(5,5)
+test_board = board_c.Board(4,4)
 test_board.setup_board_fields()
 test_board.generate_board()
-test_win_line = 4
-
-print(test_board.rows)
-print(test_board.columns)
+test_win_line = 3
 
 def generate_horizontal_set():
     horizontal_set = []
@@ -37,6 +34,27 @@ def generate_vertical_set():
                 pass
     return vertical_set
 
+def generate_diagonally_up_set():
+    du_set = []
+    x_left = 1
+    x_right = x_left + test_win_line - 1
+    while x_right < test_board.columns:
+
+        y_left = 1
+        y_right = y_left + test_win_line - 1
+        while y_right < test_board.rows:
+            line_cords = {"x_left" : x_left,
+                          "y_left" : y_left, 
+                          "x_right" : x_right, 
+                          "y_right" : y_right}
+            print(line_cords)
+            du_set.append(line_cords)
+            y_left += 1
+            y_right += 1
+        x_left += 1
+        x_right += 1
+    return du_set
+            
 def choose_r_win_line(set):
     random_win_line = random.randrange(0,len(set),1)
     return set[random_win_line]
@@ -57,20 +75,20 @@ def place_r_win_line(line_cords, set_type, sign):
         elif set_type == "vertical":
             test_board.add_checker(c2, c1, sign)
 
-
-# Uncomment code line with type of set you want to generate a test random win line      
+# Uncomment code lines with type of set you want to generate a test random win line      
  
 #set = generate_horizontal_set()
 #set_type = "horizontal"
 
-set = generate_vertical_set()
-set_type = "vertical"
+# set = generate_vertical_set()
+# set_type = "vertical"
 
 #set = generate_diagonally_down_set()
 #set_type = "diagonally_down"
 
-#set = generate_diagonally_up_set()
-#set_type = "diagonally_up"
+set = generate_diagonally_up_set()
+set_type = "diagonally_up"
+print(set)
 
 # Choose a random line from the set and place it on the board
 r_win_line = choose_r_win_line(set)

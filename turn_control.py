@@ -79,7 +79,7 @@ class Turn:
     def check_diagonally_up_status(self, board):
         start_row_index = 1
         board_array = board.board_array
-        while start_row_index + 3 < board.rows:
+        while start_row_index + self.win_line - 1 < board.rows:
             start_col_index = board.columns - 1
             while start_col_index - self.win_line - 1 > 0:
                 if board_array[start_col_index][start_row_index] == self.turn_checker_sign:
